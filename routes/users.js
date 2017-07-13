@@ -1,17 +1,18 @@
 var express = require('express');
-var router = express.Router();
+var userrouter = express.Router();
 var User = require('../models/user');
 var passport = require('passport');
 var Verify    = require('./verify');
+const mongoose = require('mongoose');
 /* GET users listing. */
-router.route('/')
+userrouter.route('/')
 .get(Verify.verifyOrdinaryUser, function(req, res, next) {
   User.find({}, function (err, users) {
       if (err) throw err;
       res.json(users);
     });
 });
-router.post('/register', function(req, res, next) {
+userrouter.post('/register', function(req, res, next) {
   User.register(new User({ username : req.body.username }),req.body.password, function(err, user) {
     if (err) {
       return res.status(500).json({err: err});
@@ -23,7 +24,7 @@ router.post('/register', function(req, res, next) {
     });
   });
 });
-router.post('/login', function(req, res, next) {
+userrouter.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err);
@@ -49,10 +50,20 @@ router.post('/login', function(req, res, next) {
     });
   })(req,res,next);
 });
-router.get('/logout', function(req, res) {
-    req.logout();
+userrouter.get('/logout', function(req, res) {
+  req.logout();
   res.status(200).json({
     status: 'Bye!'
   });
 });
-module.exports = router;
+userrouter.route('/:userId')
+.delete(function (req, res, next) {
+  //res.json(req.params.userId);
+  var _id= req.params.userId;
+  console.log(_id);
+    User.findByIdAndRemove(_id, function (err, resp) {
+      if (err) throw err;
+      res.json(resp);
+    });
+});
+module.exports = userrouter;
