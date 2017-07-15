@@ -40,7 +40,7 @@ $(document).ready(function() {
 					    localStorage.setItem("token", msg.token);
 					    // Retrieve
 					    console.log(localStorage.getItem("token"));
-					    window.location.href = "./users.html";
+					    window.location.href = "./test.html";
 					    console.log("getting");
 					} else {
 					    alert("localStorage is not supported");

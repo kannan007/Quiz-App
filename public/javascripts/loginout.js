@@ -15,6 +15,7 @@ $(document).ready(function() {
 			  }
 			})
 			.done(function(data) {
+				console.log(data);
 				for(var i=0;i<data.length;i++) {
 					/*Object.keys(data[i]).forEach(function(key) {
 		    			console.log(data[i].username);
