@@ -49,12 +49,16 @@ $(document).ready(function() {
 					var id=datas[i].userid;
 					$.ajax({
 					  method: "DELETE",
-					  url: " http://localhost:3000/users/id",
+					  url: "http://localhost:3000/users/"+id+"",
+					  success: function(data) {
+					  	console.log(data);
+					  },
+					  error: function(req,msg,res) {
+					  	console.log(req);
+					  	console.log(msg);
+					  	console.log(res);
+					  }
 					})
-					.done(function(msg) {
-					    alert("Removed item");
-					    console.log(msg);
-					});
 				}
 			}
 		},

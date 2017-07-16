@@ -20,6 +20,7 @@ db.once('open', function () {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var questions=require('./routes/questionrouter');
+var categories=require('./routes/categoryrouter');
 
 var app = express();
 
@@ -45,6 +46,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use('/', index);
 app.use('/users', users);
 app.use('/test',questions);
+app.use('/categories',categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

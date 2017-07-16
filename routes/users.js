@@ -59,11 +59,13 @@ userrouter.get('/logout', function(req, res) {
 userrouter.route('/:userId')
 .delete(function (req, res, next) {
   //res.json(req.params.userId);
-  var _id= req.params.userId;
+  //var _id=  mongoose.Types.ObjectId(req.params.userId);
   console.log(_id);
-    User.findByIdAndRemove(_id, function (err, resp) {
-      if (err) throw err;
-      res.json(resp);
-    });
+  User.findByIdAndRemove(req.params.userId, function (err, resp) {
+    if(err) {
+      return res.status(500).json({err: err});
+    }
+    res.json(resp);
+  });
 });
 module.exports = userrouter;

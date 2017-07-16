@@ -6,9 +6,10 @@ var MCQ=require('../models/question');
 
 var MCQrouter=express.Router();
 MCQrouter.route('/')
-.get(Verify.verifyOrdinaryUser,function(req,res,next){
+.get(Verify.verifyOrdinaryUser,function(req,res,next) {
 	//res.end("Hi Welcome");
-	MCQ.find({},function(err,questions){
+	MCQ.find({},function(err,questions) {
+		if (err) throw err;
 		res.json(questions);
 	});
 })
