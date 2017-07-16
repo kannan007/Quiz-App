@@ -19,6 +19,7 @@ db.once('open', function () {
 });
 var index = require('./routes/index');
 var users = require('./routes/users');
+var questions=require('./routes/questionrouter');
 
 var app = express();
 
@@ -43,6 +44,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/test',questions);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -40,7 +40,12 @@ $(document).ready(function() {
 					    localStorage.setItem("token", msg.token);
 					    // Retrieve
 					    console.log(localStorage.getItem("token"));
-					    window.location.href = "./test.html";
+					    if(loginusers.username==="admin") {
+					    	window.location.href="./users.html";
+					    }
+					    else {
+					    	window.location.href = "./test.html";
+					    }
 					    console.log("getting");
 					} else {
 					    alert("localStorage is not supported");
