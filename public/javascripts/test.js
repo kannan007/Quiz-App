@@ -16,12 +16,12 @@ $(document).ready(function() {
 			getquestions:function(tokencategory) {
 				//token=localStorage.getItem("token");
 				$.ajax({
-				  method: "GET",
-				  url: " http://localhost:3000/questions",
-				  headers: {
-			    	'x-access-token' : token,
-			    	'category-token' : tokencategory
-				  }
+					method: "GET",
+				  	url: " http://localhost:3000/questions",
+				  	headers: {
+			    		'x-access-token' : token,
+			    		'category-token' : tokencategory
+				  	}
 				})
 				.done(function(data) {
 				    for(var i=0;i<data.length;i++) {
@@ -36,11 +36,11 @@ $(document).ready(function() {
 			getcategories:function() {
 				token=localStorage.getItem("token");
 				$.ajax({
-				  method: "GET",
-				  url: " http://localhost:3000/categories",
-				  headers: {
-			    	'x-access-token' : token
-				  }
+					method: "GET",
+				  	url: " http://localhost:3000/categories",
+				  	headers: {
+			    		'x-access-token' : token
+				  	}
 				})
 				.done(function(data) {
 				    for(var i=0;i<data.length;i++) {
@@ -55,8 +55,8 @@ $(document).ready(function() {
 			},
 			logout:function() {
 				$.ajax({
-				  method: "GET",
-				  url: " http://localhost:3000/users/logout",
+				  	method: "GET",
+				  	url: " http://localhost:3000/users/logout",
 				})
 				.done(function(msg) {
 					localStorage.removeItem("token");
