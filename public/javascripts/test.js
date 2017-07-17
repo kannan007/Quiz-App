@@ -46,6 +46,7 @@ $(document).ready(function() {
 				    for(var i=0;i<data.length;i++) {
 				    	categories.push(data[i]);
 				    }
+				    console.log(categories);
 				    view.render();
 				})
 				.fail(function(msg){
