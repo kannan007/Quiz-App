@@ -11,11 +11,10 @@ $(document).ready(function() {
 		var categories=[];
 		var selectedanswers=[];
 		var score=0;
+		var token;
 		var controller= {
 			getquestions:function(tokencategory) {
-				var token=localStorage.getItem("token");
-				var tokencategory=tokencategory;
-				console.log(tokencategory);
+				//token=localStorage.getItem("token");
 				$.ajax({
 				  method: "GET",
 				  url: " http://localhost:3000/questions",
@@ -28,7 +27,6 @@ $(document).ready(function() {
 				    for(var i=0;i<data.length;i++) {
 				    	fullquestions.push(new prototypequestions(data[i]));
 				    }
-				    console.log(fullquestions);
 				    view.renderquestions();
 				})
 				.fail(function(msg){
@@ -36,7 +34,7 @@ $(document).ready(function() {
 				});
 			},
 			getcategories:function() {
-				var token=localStorage.getItem("token");
+				token=localStorage.getItem("token");
 				$.ajax({
 				  method: "GET",
 				  url: " http://localhost:3000/categories",
@@ -63,16 +61,14 @@ $(document).ready(function() {
 					localStorage.removeItem("token");
 				    alert("Succesfully Logged out");
 				    window.location.href = "/";
-				    console.log(msg);
 				});
 			},
 			submitanswers:function() {
 				score=0;
-				console.log("Triggered");
-				if(selectedanswers.length===loadingquestions.length) {
-					for(i=0;i<loadingquestions.length;i++) {
-						console.log("selectedanswer"+ selectedanswers[i] + " correctanswer " + loadingquestions[i].correctanswer);
-						if(selectedanswers[i]===loadingquestions[i].correctanswer) {
+				if(selectedanswers.length===fullquestions.length) {
+					for(i=0;i<fullquestions.length;i++) {
+						//console.log("selectedanswer"+ selectedanswers[i] + " correctanswer " + fullquestions[i].correctanswer);
+						if(selectedanswers[i]===fullquestions[i].correctanswer) {
 							score++;
 						}
 					}
@@ -84,7 +80,6 @@ $(document).ready(function() {
 			},
 			selectedanswer:function(index) {
 				selectedanswers[index]=$('input[name=optradio'+index+']:checked').val();
-				console.log(selectedanswers);
 			},
 			init:function() {
 				view.init();
@@ -106,10 +101,8 @@ $(document).ready(function() {
 				});
 				var selectlang=this.selectlang;
 				selectlang.on('click',function() {
-					//loadingquestions.splice(0,loadingquestions.length);
-					//selectedanswers.splice(0,selectedanswers.length);
-					//controller.loadquestions(selectlang.val());
-					console.log(selectlang.val());
+					fullquestions.splice(0,fullquestions.length);
+					selectedanswers.splice(0,selectedanswers.length);
 					controller.getquestions(selectlang.val());
 				});
 			},
@@ -133,7 +126,6 @@ $(document).ready(function() {
 				}
 				var radio=$("input[type=radio]");
 				questionsection.find(radio).on('click',function() {
-					console.log($(this).attr("questionno"));
 					controller.selectedanswer($(this).attr("questionno"));
 					$(this).attr("checked","checked");
 				});

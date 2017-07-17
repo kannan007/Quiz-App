@@ -4,9 +4,10 @@ $(document).ready(function() {
 		this.userid=data._id;
 	};
 	var datas=[];
+	var token;
 	var controller= {
 		getusers:function() {
-			var token=localStorage.getItem("token");
+			token=localStorage.getItem("token");
 			$.ajax({
 			  method: "GET",
 			  url: " http://localhost:3000/users",
@@ -15,7 +16,6 @@ $(document).ready(function() {
 			  }
 			})
 			.done(function(data) {
-				console.log(data);
 				for(var i=0;i<data.length;i++) {
 					/*Object.keys(data[i]).forEach(function(key) {
 		    			console.log(data[i].username);
@@ -23,7 +23,6 @@ $(document).ready(function() {
 					});*/
 					datas.push(new prototypedata(data[i]));
 					view.template();
-					//main.append("<li>"+data[i].username+"</li>");
 				}
 			});
 		},
@@ -36,20 +35,22 @@ $(document).ready(function() {
 				localStorage.removeItem("token");
 			    alert("Succesfully Logged out");
 			    window.location.href = "/";
-			    console.log(msg);
 			});
 		},
 		delete:function(value) {
-			console.log(value);
 			var text=value.replace("Remove","");
-			console.log(text);
 			for(var i=0;i<datas.length;i++) {
 				if(datas[i].username===text) {
 					console.log(datas[i].userid);
 					var id=datas[i].userid;
+					datas.splice(i,1);
+					console.log(datas);
 					$.ajax({
 					  method: "DELETE",
 					  url: "http://localhost:3000/users/"+id+"",
+					  headers: {
+				    	'x-access-token' : token
+					  },
 					  success: function(data) {
 					  	console.log(data);
 					  },

@@ -9,7 +9,6 @@ MCQrouter.route('/')
 .get(function(req,res,next) {
 	//res.end("Hi Welcome");
 	var category=req.headers['category-token'];
-	console.log(category);
 	if(category) {
 		MCQ.find({"category":category},function(err,questions) {
 			if (err) throw err;
@@ -20,7 +19,6 @@ MCQrouter.route('/')
 .post(function (req, res, next) {
     MCQ.create(req.body, function (err, question) {
         if (err) throw err;
-        console.log('Question created!');
         var id = question._id;
         res.writeHead(200, {
             'Content-Type': 'text/plain'

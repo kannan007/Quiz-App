@@ -6,7 +6,7 @@ var Verify    = require('./verify');
 const mongoose = require('mongoose');
 /* GET users listing. */
 userrouter.route('/')
-.get(Verify.verifyOrdinaryUser, function(req, res, next) {
+.get(Verify.verifyAdmin,Verify.verifyOrdinaryUser, function(req, res, next) {
   User.find({}, function (err, users) {
       if (err) throw err;
       res.json(users);
@@ -57,10 +57,10 @@ userrouter.get('/logout', function(req, res) {
   });
 });
 userrouter.route('/:userId')
-.delete(function (req, res, next) {
+.delete(Verify.verifyAdmin,Verify.verifyOrdinaryUser,function (req, res, next) {
   //res.json(req.params.userId);
   //var _id=  mongoose.Types.ObjectId(req.params.userId);
-  console.log(_id);
+  //console.log(_id);
   User.findByIdAndRemove(req.params.userId, function (err, resp) {
     if(err) {
       return res.status(500).json({err: err});

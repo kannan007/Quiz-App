@@ -39,7 +39,6 @@ $(document).ready(function() {
 		    		// Store
 					    localStorage.setItem("token", msg.token);
 					    // Retrieve
-					    console.log(localStorage.getItem("token"));
 					    if(loginusers.username==="admin") {
 					    	window.location.href="./users.html";
 					    }
