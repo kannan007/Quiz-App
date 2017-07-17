@@ -45,7 +45,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/test',questions);
+app.use('/questions',questions);
 app.use('/categories',categories);
 
 // catch 404 and forward to error handler

@@ -6,7 +6,8 @@ var Category=require('../models/question');
 
 var Categoryrouter=express.Router();
 Categoryrouter.route('/')
-.get(function(req,res,next) {
+.get(Verify.verifyOrdinaryUser,function(req,res,next) {
+	//res.end("hi");
 	Category.find({}).distinct('category', function(err, category) {
 		if (err) throw err;
 		res.json(category);

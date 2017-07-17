@@ -8,40 +8,51 @@ $(document).ready(function() {
 			this.correctanswer=data.correctanswer
 		};
 		var fullquestions=[];
-		var loadingquestions=[];
 		var categories=[];
 		var selectedanswers=[];
 		var score=0;
 		var controller= {
-			getquestions:function() {
+			getquestions:function(tokencategory) {
+				var token=localStorage.getItem("token");
+				var tokencategory=tokencategory;
+				console.log(tokencategory);
+				$.ajax({
+				  method: "GET",
+				  url: " http://localhost:3000/questions",
+				  headers: {
+			    	'x-access-token' : token,
+			    	'category-token' : tokencategory
+				  }
+				})
+				.done(function(data) {
+				    for(var i=0;i<data.length;i++) {
+				    	fullquestions.push(new prototypequestions(data[i]));
+				    }
+				    console.log(fullquestions);
+				    view.renderquestions();
+				})
+				.fail(function(msg){
+					console.log("error");
+				});
+			},
+			getcategories:function() {
 				var token=localStorage.getItem("token");
 				$.ajax({
 				  method: "GET",
-				  url: " http://localhost:3000/test",
+				  url: " http://localhost:3000/categories",
 				  headers: {
 			    	'x-access-token' : token
 				  }
 				})
 				.done(function(data) {
 				    for(var i=0;i<data.length;i++) {
-				    	fullquestions.push(new prototypequestions(data[i]));
-				    	if(categories.indexOf(data[i].category)<0) {
-				    		categories.push(data[i].category);
-				    	}
+				    	categories.push(data[i]);
 				    }
 				    view.render();
 				})
 				.fail(function(msg){
 					console.log("error");
 				});
-			},
-			loadquestions:function(category) {
-				for(i=0;i<fullquestions.length;i++) {
-					if(fullquestions[i].category==category) {
-						loadingquestions.push(fullquestions[i]);
-					}
-				}
-				view.renderquestions();
 			},
 			logout:function() {
 				$.ajax({
@@ -77,7 +88,7 @@ $(document).ready(function() {
 			},
 			init:function() {
 				view.init();
-				controller.getquestions();
+				controller.getcategories();
 			}
 		};
 		var view= {
@@ -95,9 +106,11 @@ $(document).ready(function() {
 				});
 				var selectlang=this.selectlang;
 				selectlang.on('click',function() {
-					loadingquestions.splice(0,loadingquestions.length);
-					selectedanswers.splice(0,selectedanswers.length);
-					controller.loadquestions(selectlang.val());
+					//loadingquestions.splice(0,loadingquestions.length);
+					//selectedanswers.splice(0,selectedanswers.length);
+					//controller.loadquestions(selectlang.val());
+					console.log(selectlang.val());
+					controller.getquestions(selectlang.val());
 				});
 			},
 			render:function() {
@@ -110,11 +123,11 @@ $(document).ready(function() {
 				var questionsection=this.questionsection;
 				questionsection.empty();
 				this.submitanswers.show();
-				for(i=0;i<loadingquestions.length;i++) {
-					questionsection.append("<div class='questionndoptions'><h5 class='questiontag'>"+loadingquestions[i].question+"</h5></div>");
-					for(var j=0;j<loadingquestions[i].options.length;j++) {
+				for(i=0;i<fullquestions.length;i++) {
+					questionsection.append("<div class='questionndoptions'><h5 class='questiontag'>"+fullquestions[i].question+"</h5></div>");
+					for(var j=0;j<fullquestions[i].options.length;j++) {
 						var options="<div class='radio'><label><input type='radio' questionno="+i+" name='optradio"+i+
-						"' value='"+loadingquestions[i].options[j]+"'>"+loadingquestions[i].options[j]+"</label></div>";
+						"' value='"+fullquestions[i].options[j]+"'>"+fullquestions[i].options[j]+"</label></div>";
 						questionsection.children('.questionndoptions').last().append(options);
 					}
 				}

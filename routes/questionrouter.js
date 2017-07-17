@@ -6,12 +6,16 @@ var MCQ=require('../models/question');
 
 var MCQrouter=express.Router();
 MCQrouter.route('/')
-.get(Verify.verifyOrdinaryUser,function(req,res,next) {
+.get(function(req,res,next) {
 	//res.end("Hi Welcome");
-	MCQ.find({},function(err,questions) {
-		if (err) throw err;
-		res.json(questions);
-	});
+	var category=req.headers['category-token'];
+	console.log(category);
+	if(category) {
+		MCQ.find({"category":category},function(err,questions) {
+			if (err) throw err;
+			res.json(questions);
+		});
+	}
 })
 .post(function (req, res, next) {
     MCQ.create(req.body, function (err, question) {
