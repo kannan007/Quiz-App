@@ -35,9 +35,11 @@ $(document).ready(function() {
 				  data: { username: loginusers.username, password: loginusers.password }
 				})
 				.done(function(msg) {
+					console.log(msg.id);
 					if (typeof(Storage) !== "undefined") {
 		    		// Store
 					    localStorage.setItem("token", msg.token);
+					    localStorage.setItem("id", msg.id);
 					    // Retrieve
 					    if(loginusers.username==="admin") {
 					    	window.location.href="./users.html";

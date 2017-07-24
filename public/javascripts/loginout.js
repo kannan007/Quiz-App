@@ -2,8 +2,9 @@ $(document).ready(function() {
 	var prototypedata=function(data) {
 		this.username=data.username;
 		this.userid=data._id;
+		this.scores=data.scores;
 	};
-	var datas=[];
+	var datas=[],i,j;
 	var token;
 	var controller= {
 		getusers:function() {
@@ -16,14 +17,14 @@ $(document).ready(function() {
 				}
 			})
 			.done(function(data) {
-				for(var i=0;i<data.length;i++) {
+				for(i=0;i<data.length;i++) {
 					/*Object.keys(data[i]).forEach(function(key) {
 		    			console.log(data[i].username);
 		    			//main.append("<li>"+data[i].username+"</li>")
 					});*/
 					datas.push(new prototypedata(data[i]));
-					view.template();
 				}
+				view.template();
 			});
 		},
 		logout:function() {
@@ -38,9 +39,8 @@ $(document).ready(function() {
 			});
 		},
 		delete:function(value) {
-			var text=value.replace("Remove","");
-			for(var i=0;i<datas.length;i++) {
-				if(datas[i].username===text) {
+			for(i=0;i<datas.length;i++) {
+				if(datas[i].username===value) {
 					console.log(datas[i].userid);
 					var id=datas[i].userid;
 					datas.splice(i,1);
@@ -59,7 +59,7 @@ $(document).ready(function() {
 					  	console.log(msg);
 					  	console.log(res);
 					  }
-					})
+					});
 				}
 			}
 		},
@@ -78,15 +78,23 @@ $(document).ready(function() {
 		},
 		template:function() {
 			var main=this.main;
-			main.text("Users List");
-			for(var i=0;i<datas.length;i++) {
-				var listitems="<li>"+datas[i].username +"<button class='btn btn-defualt'>Remove</button></li>"
+			//main.text("List of Users who have registered");
+			for(i=0;i<datas.length;i++) {
+				var listitems="<div class='col-md-3 card-item'><div class='card'><div class='card-title'>"+ datas[i].username + "</div></div></div>";
+				var tableheaders="<table class='table'><tr><th>Category</td><th>Score</th></tr></table>";
 				main.append(listitems);
+				main.find(".card").last().append(tableheaders);
+				for(j=0;j<datas[i].scores.length;j++) {
+					//console.log(datas[i].scores[j]);
+					var tableelements ="<tr><td>"+datas[i].scores[j].category+"</td><td>"+datas[i].scores[j].score+"</td></tr>";
+					main.find("table").last().append(tableelements);
+				}
+				main.find(".card").last().append("<div class='card-footer'><button class='btn btn-default'>Remove</button></div>")
 			}
-			main.find("li").on('click',function() {
-				controller.delete($(this).text());
-				//console.log($(this).text());
-				//$(this).remove();
+			main.find("button").on('click',function() {
+				console.log($(this).parents(".card-item").find('.card-title').text());
+				$(this).parentsUntil(".card-item").remove();
+				controller.delete($(this).parents(".card-item").find(".card-title").text());
 			});
 		}
 	};

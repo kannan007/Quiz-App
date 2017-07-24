@@ -7,11 +7,8 @@ $(document).ready(function() {
 			this.options=data.options,
 			this.correctanswer=data.correctanswer
 		};
-		var fullquestions=[];
-		var categories=[];
-		var selectedanswers=[];
-		var score=0;
-		var token;
+		var fullquestions=[],categories=[],selectedanswers=[],currentcategory;
+		var score=0,token,id;
 		var controller= {
 			getquestions:function(tokencategory) {
 				//token=localStorage.getItem("token");
@@ -35,6 +32,7 @@ $(document).ready(function() {
 			},
 			getcategories:function() {
 				token=localStorage.getItem("token");
+				id=localStorage.getItem("id");
 				$.ajax({
 					method: "GET",
 				  	url: " http://localhost:3000/categories",
@@ -46,7 +44,6 @@ $(document).ready(function() {
 				    for(var i=0;i<data.length;i++) {
 				    	categories.push(data[i]);
 				    }
-				    console.log(categories);
 				    view.render();
 				})
 				.fail(function(msg){
@@ -64,7 +61,7 @@ $(document).ready(function() {
 				    window.location.href = "/";
 				});
 			},
-			submitanswers:function() {
+			submitanswers:function(currentcategory) {
 				score=0;
 				if(selectedanswers.length===fullquestions.length) {
 					for(i=0;i<fullquestions.length;i++) {
@@ -73,7 +70,22 @@ $(document).ready(function() {
 							score++;
 						}
 					}
-					console.log(score);
+					$.ajax({
+						method: "POST",
+						url: "http://localhost:3000/users/"+id+"/scores",
+						data: {category: currentcategory, score: score},
+						headers: {
+				    		'x-access-token' : token
+					  	},
+					  	success: function(data) {
+					  		console.log(data);
+					  	},
+					  	error: function(req,msg,res) {
+					  		console.log(req);
+					  		console.log(msg);
+					  		console.log(res);
+					  	}
+					});
 				}
 				else {
 					alert("Choose answers for all");
@@ -94,17 +106,18 @@ $(document).ready(function() {
 				this.submitanswers=$(".submit-answers");
 				this.logout=$(".logout-button");
 				this.submitanswers.hide();
+				var selectlang=this.selectlang;
 				this.logout.on('click',function() {
 					controller.logout();
 				});
 				this.submitanswers.on('click',function() {
-					controller.submitanswers();
+					controller.submitanswers(currentcategory);
 				});
-				var selectlang=this.selectlang;
 				selectlang.on('click',function() {
 					fullquestions.splice(0,fullquestions.length);
 					selectedanswers.splice(0,selectedanswers.length);
-					controller.getquestions(selectlang.val());
+					currentcategory=selectlang.val();
+					controller.getquestions(currentcategory);
 				});
 			},
 			render:function() {

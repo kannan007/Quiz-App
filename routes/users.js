@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 /* GET users listing. */
 userrouter.route('/')
 .get(Verify.verifyAdmin,Verify.verifyOrdinaryUser, function(req, res, next) {
-  User.find({}, function (err, users) {
+  User.find({"admin":false}, function (err, users) {
       if (err) throw err;
       res.json(users);
     });
@@ -45,7 +45,8 @@ userrouter.post('/login', function(req, res, next) {
       res.status(200).json({
         status: 'Login successful!',
         success: true,
-        token: token
+        token: token,
+        id: user._id
       });
     });
   })(req,res,next);
@@ -57,6 +58,9 @@ userrouter.get('/logout', function(req, res) {
   });
 });
 userrouter.route('/:userId')
+  .get(function(req,res,next) {
+    res.end(req.params.userId);
+})
 .delete(Verify.verifyAdmin,Verify.verifyOrdinaryUser,function (req, res, next) {
   //res.json(req.params.userId);
   //var _id=  mongoose.Types.ObjectId(req.params.userId);
@@ -66,6 +70,22 @@ userrouter.route('/:userId')
       return res.status(500).json({err: err});
     }
     res.json(resp);
+  });
+});
+userrouter.route('/:userId/scores')
+.get(function(req,res,next) {
+  res.end("Podang ");
+})
+.post(function(req,res,next) {
+  User.findById(req.params.userId, function (err, user) {
+    if (err) throw err;
+    //req.body.postedBy = req.decoded._doc._id;
+    //console.log(req.body);s
+    user.scores.push(req.body);
+    user.save(function (err, score) {
+      if (err) throw err;
+      res.json(score);
+    });
   });
 });
 module.exports = userrouter;
