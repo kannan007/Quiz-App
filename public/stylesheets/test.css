@@ -1,0 +1,11 @@
+body nav {
+  padding: 15px;
+  font-size: 22px;
+  margin-bottom: 0;
+}
+body nav ul.navbar-right li {
+  padding-right: 25px;
+}
+body nav ul.navbar-right li span {
+  padding-right: 5px;
+}

@@ -17,15 +17,16 @@ $(document).ready(function() {
 			signup:function() {
 				$.ajax({
 				  method: "POST",
-				  url: " http://localhost:3000/users/register",
-				  data: { username: registeredusers.username, password: registeredusers.password }
-				})
-				.done(function(msg) {
-				    alert("Succesfully registered");
-				    window.location.href="./login.html";
-				})
-				.fail(function(msg){
-					console.log("error");
+				  url: "http://localhost:3000/users/register",
+				  data: { username: registeredusers.username, password: registeredusers.password },
+					success: function() {
+				  		alert("Registration Successfull please login to continue");
+				  	},
+				  	error: function(req,msg,res) {
+				  		console.log(req);
+				  		console.log(msg);
+				  		console.log(res);
+				  	}
 				});
 			},
 			login:function() {
@@ -65,8 +66,10 @@ $(document).ready(function() {
 				this.loginbutton=$(".login-button");
 				var username=$("#username");
 				var password=$("#pwd");
+				var signupusername=$("#signupusername");
+				var signuppassword=$("#signuppwd");
 				this.registerbutton.on('click',function() {
-					registeredusers=new registeredusersprototype(username.val(),password.val());
+					registeredusers=new registeredusersprototype(signupusername.val(),signuppassword.val());
 					controller.signup();
 				});
 				this.loginbutton.on('click',function() {

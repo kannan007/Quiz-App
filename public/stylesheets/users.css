@@ -1,28 +1,38 @@
-body {
-  padding: 10px;
+body nav {
+  padding: 15px;
+  font-size: 22px;
+  margin-bottom: 0;
 }
-body .users-list .card {
+body nav ul.navbar-right li {
+  padding-right: 25px;
+}
+body nav ul.navbar-right li span {
+  padding-right: 5px;
+}
+body .users-list .card-item {
+  min-height: 250px;
+}
+body .users-list .card-item .card {
   border: 1px solid #d9edf7;
   border-radius: 5px;
 }
-body .users-list .card .card-title {
+body .users-list .card-item .card .card-title {
   font-size: 22px;
 }
-body .users-list .card table {
+body .users-list .card-item .card table {
   margin: 10px 0;
 }
-body .users-list .card table th,
-body .users-list .card table td {
+body .users-list .card-item .card table th,
+body .users-list .card-item .card table td {
   text-align: center;
 }
-body .users-list .card .card-title,
-body .users-list .card .card-footer {
+body .users-list .card-item .card .card-title,
+body .users-list .card-item .card .card-footer {
   text-align: center;
   background-color: #F1F1F1;
   padding: 5px;
 }
-body .users-list .card .card-footer button {
+body .users-list .card-item .card .card-footer button {
   display: block;
   margin: auto;
-  background-color: #F1F1F1;
 }

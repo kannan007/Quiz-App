@@ -41,10 +41,8 @@ $(document).ready(function() {
 		delete:function(value) {
 			for(i=0;i<datas.length;i++) {
 				if(datas[i].username===value) {
-					console.log(datas[i].userid);
 					var id=datas[i].userid;
 					datas.splice(i,1);
-					console.log(datas);
 					$.ajax({
 					  method: "DELETE",
 					  url: "http://localhost:3000/users/"+id+"",
@@ -71,7 +69,7 @@ $(document).ready(function() {
 	var view= {
 		init:function() {
 			this.main=$(".users-list");
-			this.logout=$(".logout");
+			this.logout=$(".logout-button");
 			this.logout.on('click',function() {
 				controller.logout();
 			});
@@ -89,12 +87,11 @@ $(document).ready(function() {
 					var tableelements ="<tr><td>"+datas[i].scores[j].category+"</td><td>"+datas[i].scores[j].score+"</td></tr>";
 					main.find("table").last().append(tableelements);
 				}
-				main.find(".card").last().append("<div class='card-footer'><button class='btn btn-default'>Remove</button></div>")
+				main.find(".card").last().append("<div class='card-footer'><button class='btn btn-danger'>Remove</button></div>")
 			}
 			main.find("button").on('click',function() {
-				console.log($(this).parents(".card-item").find('.card-title').text());
-				$(this).parentsUntil(".card-item").remove();
 				controller.delete($(this).parents(".card-item").find(".card-title").text());
+				$(this).parents(".card-item").remove();
 			});
 		}
 	};
