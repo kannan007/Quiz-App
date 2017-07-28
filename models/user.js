@@ -22,6 +22,8 @@ var User = new Schema({
         default: false
     },
     scores:[scoresSchema]
+},{
+	timestamps: true
 });
 
 User.plugin(passportLocalMongoose);
