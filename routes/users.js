@@ -19,7 +19,8 @@ userrouter.post('/register', function(req, res, next) {
     }
     user.save(function(err,user) {
       passport.authenticate('local')(req, res, function () {
-        return res.status(200).json({status: 'Registration Successful!'});
+        //return res.status(200).json({status: 'Registration Successful!'});
+        res.redirect('/?q=kannan');
       });
     });
   });
@@ -74,13 +75,16 @@ userrouter.route('/:userId')
 });
 userrouter.route('/:userId/scores')
 .get(function(req,res,next) {
-  res.end("Podang ");
+  User.findById(req.params.userId,{"scores":""}, function(err,user) {
+    if(err) throw err;
+    res.json(user);
+  });
 })
 .post(function(req,res,next) {
   User.findById(req.params.userId, function (err, user) {
     if (err) throw err;
     //req.body.postedBy = req.decoded._doc._id;
-    //console.log(req.body);s
+    //console.log(req.body);
     user.scores.push(req.body);
     user.save(function (err, score) {
       if (err) throw err;

@@ -7,17 +7,18 @@ $(document).ready(function() {
 			this.options=data.options,
 			this.correctanswer=data.correctanswer
 		};
-		var fullquestions=[],categories=[],selectedanswers=[],currentcategory;
+		var fullquestions=[],selectedanswers=[],currentcategory;
 		var score=0,token,id;
 		var controller= {
-			getquestions:function(tokencategory) {
-				//token=localStorage.getItem("token");
+			getquestions:function() {
+				token=localStorage.getItem("token");
+				currentcategory=localStorage.getItem("category");
 				$.ajax({
 					method: "GET",
 				  	url: " http://localhost:3000/questions",
 				  	headers: {
 			    		'x-access-token' : token,
-			    		'category-token' : tokencategory
+			    		'category-token' : currentcategory
 				  	}
 				})
 				.done(function(data) {
@@ -25,26 +26,6 @@ $(document).ready(function() {
 				    	fullquestions.push(new prototypequestions(data[i]));
 				    }
 				    view.renderquestions();
-				})
-				.fail(function(msg){
-					console.log("error");
-				});
-			},
-			getcategories:function() {
-				token=localStorage.getItem("token");
-				id=localStorage.getItem("id");
-				$.ajax({
-					method: "GET",
-				  	url: " http://localhost:3000/categories",
-				  	headers: {
-			    		'x-access-token' : token
-				  	}
-				})
-				.done(function(data) {
-				    for(var i=0;i<data.length;i++) {
-				    	categories.push(data[i]);
-				    }
-				    view.render();
 				})
 				.fail(function(msg){
 					console.log("error");
@@ -61,7 +42,8 @@ $(document).ready(function() {
 				    window.location.href = "/";
 				});
 			},
-			submitanswers:function(currentcategory) {
+			submitanswers:function() {
+				id=localStorage.getItem("id");
 				score=0;
 				if(selectedanswers.length===fullquestions.length) {
 					for(i=0;i<fullquestions.length;i++) {
@@ -78,7 +60,7 @@ $(document).ready(function() {
 				    		'x-access-token' : token
 					  	},
 					  	success: function(data) {
-					  		console.log(data);
+					  		window.location.href = "./categories.html";
 					  	},
 					  	error: function(req,msg,res) {
 					  		console.log(req);
@@ -92,20 +74,21 @@ $(document).ready(function() {
 				}
 			},
 			selectedanswer:function(index) {
+				//console.log($('input[name=optradio'+index+']:checked').val());
 				selectedanswers[index]=$('input[name=optradio'+index+']:checked').val();
 			},
 			init:function() {
 				view.init();
-				controller.getcategories();
+				controller.getquestions();
 			}
 		};
 		var view= {
 			init:function() {
-				this.selectlang=$("#select-lang");
+				var self=this;
 				this.questionsection=$(".questions-section");
-				this.submitanswers=$(".submit-answers");
 				this.logout=$(".logout-button");
-				this.submitanswers.hide();
+				this.submitanswers=$(".submit-answers");
+				this.scorecard=$(".scorecard");
 				var selectlang=this.selectlang;
 				this.logout.on('click',function() {
 					controller.logout();
@@ -113,28 +96,16 @@ $(document).ready(function() {
 				this.submitanswers.on('click',function() {
 					controller.submitanswers(currentcategory);
 				});
-				selectlang.on('click',function() {
-					fullquestions.splice(0,fullquestions.length);
-					selectedanswers.splice(0,selectedanswers.length);
-					currentcategory=selectlang.val();
-					controller.getquestions(currentcategory);
-				});
-			},
-			render:function() {
-				var selectlang=this.selectlang;
-				for(i=0;i<categories.length;i++) {
-					selectlang.append("<option>"+categories[i]+"</option>");
-				}
 			},
 			renderquestions:function() {
 				var questionsection=this.questionsection;
 				questionsection.empty();
 				this.submitanswers.show();
 				for(i=0;i<fullquestions.length;i++) {
-					questionsection.append("<div class='questionndoptions'><h5 class='questiontag'>"+fullquestions[i].question+"</h5></div>");
+					questionsection.append(`<div class='questionndoptions'><h5 class='questiontag'>${fullquestions[i].question}</h5></div>`);
 					for(var j=0;j<fullquestions[i].options.length;j++) {
-						var options="<div class='radio'><label><input type='radio' questionno="+i+" name='optradio"+i+
-						"' value='"+fullquestions[i].options[j]+"'>"+fullquestions[i].options[j]+"</label></div>";
+						var options=`<div class='radio'><label><input type='radio' questionno=${i} name='optradio${i}'
+						value='${fullquestions[i].options[j]}'>${fullquestions[i].options[j]}</label></div>`;
 						questionsection.children('.questionndoptions').last().append(options);
 					}
 				}
@@ -143,7 +114,7 @@ $(document).ready(function() {
 					controller.selectedanswer($(this).attr("questionno"));
 					$(this).attr("checked","checked");
 				});
-			}
+			},
 		}
 		controller.init();
 	})();

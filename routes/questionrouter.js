@@ -6,7 +6,7 @@ var MCQ=require('../models/question');
 
 var MCQrouter=express.Router();
 MCQrouter.route('/')
-.get(function(req,res,next) {
+.get(Verify.verifyOrdinaryUser,function(req,res,next) {
 	//res.end("Hi Welcome");
 	var category=req.headers['category-token'];
 	if(category) {
@@ -27,7 +27,7 @@ MCQrouter.route('/')
     });
 });
 MCQrouter.route('/:questionid')
-.get(function(req,res,next) {
+.get(Verify.verifyOrdinaryUser,function(req,res,next) {
 	MCQ.findById(req.params.questionid)
 	.exec(function(err,question){
 		if (err) throw err;

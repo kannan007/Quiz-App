@@ -21,6 +21,7 @@ $(document).ready(function() {
 				  data: { username: registeredusers.username, password: registeredusers.password },
 					success: function() {
 				  		alert("Registration Successfull please login to continue");
+				  		window.href=""
 				  	},
 				  	error: function(req,msg,res) {
 				  		console.log(req);
@@ -46,7 +47,7 @@ $(document).ready(function() {
 					    	window.location.href="./users.html";
 					    }
 					    else {
-					    	window.location.href = "./test.html";
+					    	window.location.href = "./categories.html";
 					    }
 					    console.log("getting");
 					} else {
@@ -70,7 +71,7 @@ $(document).ready(function() {
 				var signuppassword=$("#signuppwd");
 				this.registerbutton.on('click',function() {
 					registeredusers=new registeredusersprototype(signupusername.val(),signuppassword.val());
-					controller.signup();
+					//controller.signup();
 				});
 				this.loginbutton.on('click',function() {
 					loginusers=new loginusersprototype(username.val(),password.val());

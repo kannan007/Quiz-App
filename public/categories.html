@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<title>Take Test</title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="stylesheets/test.css">
+		<script src="javascripts/jquery.min.js"></script>
+		<script src="javascripts/bootstrap.min.js"></script>
+		<script src="javascripts/categories.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<button type="button" class="btn btn-default logout-button">
+						<span><i class="fa fa-sign-out" aria-hidden="true"></i></span>Logout</button>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container">
+			<ul class="nav nav-pills">
+			    <li class="active test-pill"><a data-toggle="pill" href="#test-pill">Take Test</a></li>
+			    <li class="score-pill"><a data-toggle="pill" href="#score-pill">Scores</a></li>
+			</ul>
+			<div class="row tab-content">
+				<div id="test-pill" class="tab-pane fade in active">
+					<div id="test" class="col-md-12 category-section">
+						<form>
+						    <div class="form-group">
+						      <label for="choose">Select a Programming Language</label>
+						      <select class="form-control" id="select-lang"></select>
+						    </div>
+					  	</form>
+					  	<button type="button" class="btn btn-default take-test-button">Go To Test</button>
+					</div>
+				</div>
+				<div id="score-pill" class="col-md-12 score-section tab-pane fade">
+					<div class="row">
+						<div class="col-md-12 scorecard">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
