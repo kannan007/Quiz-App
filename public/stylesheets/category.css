@@ -1,0 +1,41 @@
+body nav {
+  padding: 15px;
+  font-size: 22px;
+  margin-bottom: 0;
+}
+body nav ul.navbar-right li {
+  padding-right: 25px;
+}
+body nav ul.navbar-right li span {
+  padding-right: 5px;
+}
+body .category-section {
+  padding: 20px;
+}
+body .score-section {
+  margin: 20px;
+}
+body .score-section .category-filter-section {
+  font-size: 20px;
+}
+body .score-section .category-filter-section label {
+  font-weight: normal;
+  padding-left: 10px;
+}
+body .score-section .scorecard table.search-results-table {
+  border: 2px solid #ddd;
+  margin: 20px 0;
+}
+body .score-section .scorecard table.search-results-table tr th {
+  padding: 15px 8px;
+  text-align: center;
+}
+body .score-section .scorecard table.search-results-table tr th span.sort {
+  margin-left: 10px;
+}
+body .score-section .scorecard table.search-results-table tr th span.sort span i.fa {
+  font-size: 15px;
+}
+body .score-section .scorecard table.search-results-table tr td {
+  text-align: center;
+}

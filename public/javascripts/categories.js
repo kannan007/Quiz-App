@@ -1,10 +1,9 @@
 $(document).ready(function() {
-	var i;
 	(function() {
 		var userscoresprototype=function(data) {
 			this.scores=data.scores;
 		};
-		var categories=[],currentcategory,userscores;
+		var categories=[],currentcategory,userscores,sortresults=[],temp,filtercategories=[],i=0,usercategories=[];
 		var score=0,token,id;
 		var controller= {
 			getcategories:function() {
@@ -45,7 +44,9 @@ $(document).ready(function() {
 				.done(function(data) {
 					//console.log(data.scores);
 					userscores=new userscoresprototype(data);
+					sortresults=userscores.scores;
 					view.renderuserscore();
+					view.renderusercategories();
 				})
 				.fail(function(msg) {
 					console.log("error");
@@ -61,6 +62,38 @@ $(document).ready(function() {
 				    alert("Succesfully Logged out");
 				    window.location.href = "/";
 				});
+			},
+			descendingsort:function() {
+				for(i=0;i<sortresults.length;i++) {
+					for(j=i+1;j<sortresults.length;j++) {
+						if(sortresults[i].score<sortresults[j].score) {
+							temp=sortresults[i];
+							sortresults[i]=sortresults[j];
+							sortresults[j]=temp;
+						}
+					}
+				}
+				view.renderusersortscore();
+			},
+			ascendingsort:function() {
+				for(i=0;i<sortresults.length;i++) {
+					for(j=i+1;j<sortresults.length;j++) {
+						if(sortresults[i].score>sortresults[j].score) {
+							temp=sortresults[i];
+							sortresults[i]=sortresults[j];
+							sortresults[j]=temp;
+						}
+					}
+				}
+				view.renderusersortscore();
+			},
+			filter:function() {
+				filtercategories=[];
+				let i=0;
+				$("input[type=checkbox]:checked").each(function() {
+					filtercategories[i++]=$(this).val();
+				});
+				view.renderfilterscore();
 			},
 			init:function() {
 				view.init();
@@ -78,6 +111,15 @@ $(document).ready(function() {
 				var selectlang=this.selectlang;
 				this.scorepill=$(".score-pill");
 				this.testpill=$(".test-pill");
+				this.filtersection=$(".category-filter-section");
+				this.ascendingsort=$(".sort-ascending");
+				this.descendingsort=$(".sort-descending");
+				this.descendingsort.on("click",function() {
+					controller.descendingsort();
+				});
+				this.ascendingsort.on("click",function() {
+					controller.ascendingsort();
+				});
 				this.testbutton=$(".take-test-button");
 				this.testbutton.on('click',function() {
 					currentcategory=selectlang.val();
@@ -91,13 +133,6 @@ $(document).ready(function() {
 				this.logout.on('click',function() {
 					controller.logout();
 				});
-				/*selectlang.on('change',function() {
-					console.log("triggered");
-					currentcategory=selectlang.val();
-					if(currentcategory.length>0) {
-						controller.getquestions(currentcategory);
-					}
-				});*/
 			},
 			render:function() {
 				var selectlang=this.selectlang;
@@ -105,13 +140,51 @@ $(document).ready(function() {
 					selectlang.append(`<option>${categories[i]}</option>`);
 				}
 			},
+			renderusercategories:function() {
+				let filtersection=this.filtersection;
+				for(let index of usercategories) {
+					var elements =`<label><input type="checkbox" name="categories" value="${index}">${index}</label>`;
+					filtersection.append(elements);
+				}
+				filtersection.find("input[type=checkbox]").on("click",function() {
+					controller.filter();
+				});
+			},
 			renderuserscore:function() {
-				var scorecard=this.scorecard;
-				var tablesearchheaders="<table class='table search-results-table'><tr><th>Category</td><th>Score</th></tr></table>";
-				scorecard.append(tablesearchheaders);
+				let scorecard=this.scorecard;
+				usercategories=[];
 				for(let index of userscores.scores) {
-					var tablesearchelements =`<tr><td>${index.category}</td><td>${index.score}</td></tr>`;
+					if(usercategories.indexOf(index.category)<0) {
+						usercategories.push(index.category);
+					}
+					var tablesearchelements =`<tr class="data-elements"><td class="category">${index.category}</td><td class="score">${index.score}</td></tr>`;
 					scorecard.find(".search-results-table").append(tablesearchelements);
+				}
+			},
+			renderusersortscore:function() {
+				let scorecard=this.scorecard;
+				scorecard.find(".search-results-table td").remove();
+				for(let index of sortresults) {
+					var tablesearchelements =`<tr class="data-elements"><td class="category">${index.category}</td><td class="score">${index.score}</td></tr>`;
+					scorecard.find(".search-results-table").append(tablesearchelements);
+				}
+			},
+			renderfilterscore:function() {
+				let scorecard=this.scorecard;
+				//scorecard.find(".search-results-table .data-elements").hide();
+				if(filtercategories.length>0) {
+					scorecard.find(".search-results-table .data-elements").hide();
+					scorecard.find(".search-results-table .data-elements").each(function(i,obj) {
+						let temp=$(this).find(".category").text();
+						//console.log("Temp "+ temp);
+						//console.log("Index value "+filtercategories.indexOf(temp));
+						if(filtercategories.indexOf(temp)>-1) {
+							$(this).show();
+						}
+					});
+				}
+				else {
+					scorecard.find(".search-results-table .data-elements").show();
 				}
 			}
 		}

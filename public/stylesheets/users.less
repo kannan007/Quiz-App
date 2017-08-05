@@ -12,7 +12,27 @@ body {
 			}
 		}
 	}
+	.category-filter-section {
+		font-size: 16px;
+		label {
+			font-weight: normal;
+			padding-left: 10px;
+		}
+	}
 	.users-list {
+		margin: 10px 0 0 0;
+		table.users-list-table {
+			tr {
+				td.user-title {
+					font-weight: bold;
+					text-transform: uppercase;
+					&:hover {
+						cursor: pointer;
+						text-decoration: underline;
+					}
+				}
+			}
+		}
 		.card-item {
 			min-height: 250px;
 			.card {

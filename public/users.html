@@ -28,22 +28,22 @@
 					<input type="text" class="form-control" name="searchusername" id="searchusername" placeholder="Type Username to Search">
 				</div>
 			</div>
-			<div class="row users-list"></div>
-			<div class="modal fade" id="scoreModal" role="dialog">
-		    	<div class="modal-dialog">
-			      	<div class="modal-content">
-			        	<div class="modal-header">
-				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
-				          	<h4 class="modal-title"></h4>
-			        	</div>
-				        <div class="modal-body">
-				        </div>
-				        <div class="modal-footer">
-				          	<button class="btn btn-default" data-dismiss="modal">Close</button>
-				        </div>
-			      	</div>
-		    	</div>
-		  	</div>
+			<div class="row">
+				<div class="col-md-6 category-filter-section">Categories:</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 users-list">
+					<table class='table users-list-table'>
+						<tr>
+							<th>Name</th><th>Registered At</th>
+							<th>Test Taken Categories</th><th></th>
+						</tr>
+					</table>
+				</div>
+				<div class="col-md-3 ">
+					<button class="btn btn-default show-users-button">Show All Users</button>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

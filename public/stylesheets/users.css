@@ -9,6 +9,24 @@ body nav ul.navbar-right li {
 body nav ul.navbar-right li span {
   padding-right: 5px;
 }
+body .category-filter-section {
+  font-size: 16px;
+}
+body .category-filter-section label {
+  font-weight: normal;
+  padding-left: 10px;
+}
+body .users-list {
+  margin: 10px 0 0 0;
+}
+body .users-list table.users-list-table tr td.user-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+body .users-list table.users-list-table tr td.user-title:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 body .users-list .card-item {
   min-height: 250px;
 }
