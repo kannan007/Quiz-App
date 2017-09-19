@@ -7,8 +7,6 @@ $(document).ready(function() {
 		var score=0,token,id;
 		var controller= {
 			getcategories:function() {
-				token=localStorage.getItem("token");
-				id=localStorage.getItem("id");
 				$.ajax({
 					method: "GET",
 				  	url: " http://localhost:3000/categories",
@@ -37,6 +35,8 @@ $(document).ready(function() {
 					}
 			},
 			getuserscores:function() {
+				token=localStorage.getItem("token");
+				id=localStorage.getItem("id");
 				$.ajax({
 					method: "GET",
 					url:"http://localhost:3000/users/"+id+"/scores",
@@ -97,8 +97,8 @@ $(document).ready(function() {
 			},
 			init:function() {
 				view.init();
-				controller.getcategories();
 				controller.getuserscores();
+				controller.getcategories();
 			}
 		};
 		var view= {
@@ -135,6 +135,15 @@ $(document).ready(function() {
 				});
 			},
 			render:function() {
+				console.log(usercategories);
+				for(i=0;i<categories.length;i++) {
+					for(j=0;j<usercategories.length;j++) {
+						if(!(categories[i].indexOf(usercategories[j])<0)) {
+							console.log(categories[i]);
+							categories.splice(i,1);
+						}
+					}
+				}
 				var selectlang=this.selectlang;
 				for(i=0;i<categories.length;i++) {
 					selectlang.append(`<option>${categories[i]}</option>`);

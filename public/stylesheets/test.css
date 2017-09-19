@@ -9,3 +9,20 @@ body nav ul.navbar-right li {
 body nav ul.navbar-right li span {
   padding-right: 5px;
 }
+body .pagination-section ul.pagination li {
+  border: 1px solid red;
+  border-radius: 50%;
+  padding: 10px;
+}
+body .pagination-section ul.pagination li:hover {
+  cursor: pointer;
+}
+body .pagination-section ul.pagination .background-color {
+  background-color: blue;
+}
+body .questions-section .questionndoptions {
+  display: none;
+}
+body .questions-section .visible {
+  display: block;
+}

@@ -75,7 +75,8 @@ userrouter.route('/:userId')
 });
 userrouter.route('/:userId/scores')
 .get(function(req,res,next) {
-  User.findById(req.params.userId,{"scores":""}, function(err,user) {
+  User.findById(req.params.userId, function(err,user) {
+    console.log(user);
     if(err) throw err;
     res.json(user);
   });
